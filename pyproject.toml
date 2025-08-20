@@ -6,11 +6,11 @@ build-backend = "setuptools.build_meta"
 name = "crime-data-analyzer"
 version = "0.1.0"
 authors = [
-  { name="Pedro Volpi Nacif", email="pedro.volpi@tcu.gov.br" },
+    { name="Pedro Volpi Nacif", email="pedro.volpi@tcu.gov.br" },
 ]
 description = "Ferramenta para auxiliar a escolha de objeto de auditoria em segurança pública."
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.12"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -29,12 +29,30 @@ dependencies = [
 [project.scripts]
 analyze-crime-data = "crime_data_analyzer.main:run"
 
+# Black and Ruff share a line-length setting
 [tool.black]
-line-length = 100
+line-length = 120
+target-version = ["py312"]
+
+[tool.isort]
+profile = "black"
+line_length = 120
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+ensure_newline_before_comments = true
+known_first_party = ["crime_data_analyzer"]
+
 [tool.ruff]
-line-length = 100
+line-length = 120
+select = ["E", "F", "W", "I"]
+ignore = ["E501"] # Ignored because Black/Ruff formatting handles line length
+fix = true
+
 [tool.mypy]
-python_version = "3.12" # Use a sua versão do Python
-warn_return_any = true
+python_version = "3.12"
+strict = true # Enables a large set of recommended strictness flags
+ignore_missing_imports = true
 warn_unused_configs = true
-ignore_missing_imports = true # Essencial para bibliotecas sem type stubs
+show_error_codes = true
+
