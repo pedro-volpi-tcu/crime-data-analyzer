@@ -1,45 +1,99 @@
 # coding=utf-8
 import logging
+import logging.config
 import os
 import sys
-from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
-LOG_DIR = Path(os.getenv("LOG_DIR", "logs"))  # Default to a 'logs' folder
-LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()  # Default to INFO level
-LOG_FILE = LOG_DIR / "crime-data-analyzer.log"
+ROOT_DIR = Path(__file__).resolve().parent.parent.parent
+LOG_DIR = ROOT_DIR / Path(os.getenv("LOG_DIR", "logs"))
+LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").upper()
 
 
-def setup_logging():
+def setup_logging() -> None:
     """
-    Sets up a dual-output logger: one for the console and one for a rotating file.
-    The log level is configurable via the LOG_LEVEL environment variable.
+    Sets up robust, production-grade logging.
+
+    This function configures logging using a dictionary (dictConfig), which is more
+    flexible than manually adding handlers. It establishes two main outputs:
+    1.  **Console (stdout)**: Human-readable format, intended for development.
+    2.  **Rotating File**: Structured JSON format, ideal for log aggregation
+        systems like ELK, Splunk, or Datadog in production.
+
+    To use this in your application:
+    1. Call `setup_logging()` once at your application's entry point.
+    2. In any other module, get a logger instance by calling:
+       `logger = logging.getLogger(__name__)`
     """
-    # Ensure the log directory exists
     LOG_DIR.mkdir(exist_ok=True)
+    log_file_path = LOG_DIR / "crime-data-analyzer.json.log"
 
-    # Get the root logger
-    logger = logging.getLogger()
-    logger.setLevel(LOG_LEVEL)
+    # The core configuration dictionary
+    logging_config = {
+        "version": 1,
+        "disable_existing_loggers": False,  # Keep loggers from 3rd-party libs
+        "formatters": {
+            "console_formatter": {"format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"},
+            # JSON formatter for production-ready, machine-readable logs
+            "json_formatter": {
+                "()": "python_json_logger.jsonlogger.JsonFormatter",
+                "format": "%(asctime)s %(name)s %(levelname)s %(module)s %(funcName)s %(lineno)d %(message)s",
+                "datefmt": "%Y-%m-%dT%H:%M:%S%z",  # ISO 8601 format
+            },
+        },
+        "handlers": {
+            "console_handler": {
+                "class": "logging.StreamHandler",
+                "formatter": "console_formatter",
+                "stream": sys.stdout,
+            },
+            # Rotating file handler for detailed, structured logs
+            "file_handler": {
+                "class": "logging.handlers.RotatingFileHandler",
+                "formatter": "json_formatter",
+                "filename": log_file_path,
+                "maxBytes": 10 * 1024 * 1024,  # 10 MB file size
+                "backupCount": 5,  # Keep 5 backup logs
+                "encoding": "utf-8",
+            },
+        },
+        "root": {
+            # Set the root logger level. You can override this for specific loggers.
+            "level": LOG_LEVEL,
+            "handlers": ["console_handler", "file_handler"],
+        },
+        # Example: Quieting a noisy third-party library
+        "loggers": {
+            "urllib3": {
+                "level": "WARNING",
+                "propagate": True,
+            }
+        },
+    }
 
-    # --- Console Handler (for clean, simple output) ---
-    console_handler = logging.StreamHandler(sys.stdout)
-    console_formatter = logging.Formatter("%(levelname)s: %(message)s")
-    console_handler.setFormatter(console_formatter)
+    logging.config.dictConfig(logging_config)
+    logging.info("Logging configured successfully. Outputting to console and %s", log_file_path)
 
-    # --- File Handler (for detailed, rotating logs) ---
-    # RotatingFileHandler keeps log files from growing too large.
-    # maxBytes=5MB, backupCount=3 means it will keep app.log, app.log.1, app.log.2
-    file_handler = RotatingFileHandler(
-        LOG_FILE, maxBytes=5 * 1024 * 1024, backupCount=3, encoding="utf-8"
-    )
-    file_formatter = logging.Formatter(
-        "%(asctime)s [%(levelname)s] %(name)s.%(funcName)s: %(message)s"
-    )
-    file_handler.setFormatter(file_formatter)
 
-    # Add handlers to the root logger
-    # Check if handlers are already added to avoid duplication in some environments
-    if not logger.handlers:
-        logger.addHandler(console_handler)
-        logger.addHandler(file_handler)
+# --- Example of how to use it ---
+if __name__ == "__main__":
+    # 1. Call this ONCE at the start of your application
+    setup_logging()
+
+    # 2. In every module, get your logger instance like this.
+    # The name will be the module's path (e.g., 'my_app.services.data_processing'),
+    # providing automatic context.
+    logger = logging.getLogger(__name__)
+
+    logger.debug("This is a detailed debug message for developers.")
+    logger.info("Application starting up...")
+    logger.info("Processing user request.", extra={"user_id": "usr_123", "request_id": "abc-xyz-789"})
+    logger.warning("Network connection is slow.")
+
+    try:
+        result = 1 / 0
+    except ZeroDivisionError:
+        # 'exc_info=True' automatically captures and logs the full exception traceback
+        logger.error("Critical calculation failed", exc_info=True)
+
+    logger.critical("A critical component has failed. Shutting down.")
