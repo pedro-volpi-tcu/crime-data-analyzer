@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "crime-data-analyzer"
+version = "0.1.0"
+authors = [
+  { name="Pedro Volpi Nacif", email="pedro.volpi@tcu.gov.br" },
+]
+description = "Ferramenta para auxiliar a escolha de objeto de auditoria em segurança pública."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "pandas",
+    "fastparquet",
+    "regex",
+    "openpyxl",
+    "matplotlib",
+    "seaborn",
+]
+
+[project.scripts]
+analyze-crime-data = "crime_data_analyzer.main:run"
+
+[tool.black]
+line-length = 100
+[tool.ruff]
+line-length = 100
+[tool.mypy]
+python_version = "3.12" # Use a sua versão do Python
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true # Essencial para bibliotecas sem type stubs
