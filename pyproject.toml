@@ -25,6 +25,7 @@ dependencies = [
     "matplotlib",
     "seaborn",
     "requests",
+    "types-requests",
 ]
 
 [project.scripts]
