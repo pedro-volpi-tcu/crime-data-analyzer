@@ -17,10 +17,8 @@ Ferramenta projetada para auxiliar na escolha de um objeto de auditoria na área
 Este projeto requer Python 3.12 ou superior. Para instalar as dependências necessárias, use pip:
 
 ```bash
-pip install -r requirements.txt
+python -m pip install -e .
 ```
-
-Você pode gerar o arquivo `requirements.txt` a partir do seu `pyproject.toml` usando `pip-tools` ou uma ferramenta similar.
 
 ## Uso
 
