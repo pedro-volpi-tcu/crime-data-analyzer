@@ -32,4 +32,4 @@ Para instruções mais detalhadas e opções disponíveis, consulte a documenta�
 
 ## Licença
 
-Este projeto é licenciado sob a Licença MIT. Consulte o arquivo `LICENSE` para mais detalhes.
+Este projeto é licenciado sob a Licença MIT.
