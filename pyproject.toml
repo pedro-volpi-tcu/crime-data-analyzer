@@ -24,6 +24,7 @@ dependencies = [
     "openpyxl",
     "matplotlib",
     "seaborn",
+    "requests",
 ]
 
 [project.scripts]
