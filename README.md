@@ -1,6 +1,6 @@
 # Ferramenta de Análise de Dados de Criminalidade
 
-Esta ferramenta foi projetada para auxiliar na escolha de um tópico de auditoria na área de segurança pública. Ela oferece um conjunto de funcionalidades para analisar dados de criminalidade, ajudando os usuários a identificar tendências, padrões e áreas que podem exigir uma investigação mais aprofundada.
+Ferramenta projetada para auxiliar na escolha de um objeto de auditoria na área de segurança pública. Ela oferece um conjunto de funcionalidades para analisar dados de criminalidade, ajudando os usuários a identificar tendências, padrões e áreas que podem exigir uma investigação mais aprofundada.
 
 ## Funcionalidades
 
