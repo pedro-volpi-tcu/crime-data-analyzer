@@ -1,4 +1,3 @@
-# coding=utf-8
 import logging
 
 from . import config
@@ -17,9 +16,7 @@ def load_or_build_data() -> CrimeData:
         builder = CrimeDataBuilder(config.INPUT_DIR)
         crime_data = builder.build()
 
-        logger.info(
-            f"Salvando dados processados para uso futuro em '{config.SERIALIZE_FILEPATH}'..."
-        )
+        logger.info(f"Salvando dados processados para uso futuro em '{config.SERIALIZE_FILEPATH}'...")
         CrimeDataSerializer.serialize(crime_data, config.SERIALIZE_FILEPATH)
 
         return crime_data

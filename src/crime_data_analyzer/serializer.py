@@ -1,12 +1,13 @@
-# coding=utf-8
-import pandas as pd
 from pathlib import Path
+
+import pandas as pd
+
 from .models import CrimeData
 
 
 class CrimeDataSerializer:
     @staticmethod
-    def serialize(crime_data_obj: CrimeData, path: Path):
+    def serialize(crime_data_obj: CrimeData, path: Path) -> None:
         print(f"Serializando objeto para {path}...")
         crime_data_obj.data.to_parquet(path, index=False)
         print("Serializado com sucesso.")

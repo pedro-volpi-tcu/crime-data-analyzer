@@ -1,4 +1,3 @@
-# coding=utf-8
 import pandas as pd
 
 
@@ -29,6 +28,5 @@ class CrimeData:
             year_range = ""  # Não mostra nada se a coluna não existir ou estiver vazia
 
         return (
-            f"<{class_name}: {num_rows:,} linhas, {num_cols} colunas"
-            f"{year_range}, Memória: {memory_usage:.2f} MB>"
+            f"<{class_name}: {num_rows:,} linhas, {num_cols} colunas" f"{year_range}, Memória: {memory_usage:.2f} MB>"
         )

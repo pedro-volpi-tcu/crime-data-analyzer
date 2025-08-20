@@ -1,9 +1,13 @@
-# coding=utf-8 models.py
-from . import log
-from .analysis import (AnalysisRunner, DrugSeizureByStateAnalyzer,
-                       FirearmSeizureByStateAnalyzer, GenderOfVictimsAnalyzer,
-                       LethalCrimesByStateAnalyzer,
-                       VehicleCrimeByStateAnalyzer)
+from utils import log
+
+from .analysis import (
+    AnalysisRunner,
+    DrugSeizureByStateAnalyzer,
+    FirearmSeizureByStateAnalyzer,
+    GenderOfVictimsAnalyzer,
+    LethalCrimesByStateAnalyzer,
+    VehicleCrimeByStateAnalyzer,
+)
 from .cli import handle_cli_args
 from .data_manager import load_or_build_data
 from .models import CrimeData
@@ -12,7 +16,7 @@ from .reporter import ReportDispatcher
 log.setup_logging()
 
 
-def perform_analysis(crime_data: CrimeData):
+def perform_analysis(crime_data: CrimeData) -> None:
     reporter = ReportDispatcher()
     runner = AnalysisRunner()
 
@@ -26,7 +30,7 @@ def perform_analysis(crime_data: CrimeData):
     reporter.process_reports(runner.results)
 
 
-def run():
+def run() -> None:
     handle_cli_args()
 
     crime_data = load_or_build_data()

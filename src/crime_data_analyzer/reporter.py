@@ -44,7 +44,7 @@ class BarChartReporter(ResultReporter):
 
 
 class ReportDispatcher:
-    def __init__(self):
+    def __init__(self) -> None:
         self._reporters_map = {
             "table": LogReporter(),
             "bar_chart": BarChartReporter(),

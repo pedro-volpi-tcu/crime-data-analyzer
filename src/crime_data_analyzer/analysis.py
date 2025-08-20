@@ -1,4 +1,3 @@
-# coding=utf-8
 import logging
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
@@ -9,6 +8,8 @@ import pandas as pd
 from .models import CrimeData
 
 ResultType = Literal["table", "bar_chart", "csv"]
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -53,7 +54,7 @@ class LethalCrimesByStateAnalyzer(Analyzer):
         return "Soma o total de vítimas de Homicídio Doloso, Feminicídio, Latrocínio e Lesão Corporal Seguida de Morte por UF."
 
     def analyze(self, crime_data: CrimeData) -> AnalysisResult:
-        logging.info(f"Executando análise: {self.name}...")
+        logger.info(f"Executando análise: {self.name}...")
         try:
             lethal_events = [
                 "Homicídio doloso",
@@ -64,18 +65,13 @@ class LethalCrimesByStateAnalyzer(Analyzer):
             filtered_df = crime_data.data[crime_data.data["evento"].isin(lethal_events)]
 
             # Usamos 'total_vitima' pois é a métrica mais relevante para esses crimes
-            result = (
-                filtered_df.groupby("uf")["total_vitima"]
-                .sum()
-                .sort_values(ascending=False)
-                .reset_index()
-            )
+            result = filtered_df.groupby("uf")["total_vitima"].sum().sort_values(ascending=False).reset_index()
             result = result.rename(columns={"uf": "UF", "total_vitima": "Total de Vítimas Letais"})
 
             return AnalysisResult(self.name, self.description, result, ["bar_chart"])
 
         except KeyError:
-            logging.warning(f"Colunas necessárias não encontradas para '{self.name}'.")
+            logger.warning(f"Colunas necessárias não encontradas para '{self.name}'.")
             return AnalysisResult(self.name, self.description, pd.DataFrame())
 
 
@@ -88,19 +84,21 @@ class DrugSeizureByStateAnalyzer(Analyzer):
 
     @property
     def description(self) -> str:
-        return "Soma o peso (em kg) de Cocaína e Maconha apreendidos, ranqueando os estados com maiores apreensões totais."
+        return (
+            "Soma o peso (em kg) de Cocaína e Maconha apreendidos, ranqueando os estados com maiores apreensões totais."
+        )
 
     def analyze(self, crime_data: CrimeData) -> AnalysisResult:
-        logging.info(f"Executando análise: {self.name}...")
+        logger.info(f"Executando análise: {self.name}...")
 
         try:
             drug_events = ["Apreensão de Cocaína", "Apreensão de Maconha"]
             filtered_df = crime_data.data[crime_data.data["evento"].isin(drug_events)]
 
             # Pivot table para ver os totais de cada droga lado a lado
-            pivot_df = filtered_df.pivot_table(
-                index="uf", columns="evento", values="total_peso", aggfunc="sum"
-            ).fillna(0)
+            pivot_df = filtered_df.pivot_table(index="uf", columns="evento", values="total_peso", aggfunc="sum").fillna(
+                0
+            )
 
             pivot_df["Total Apreendido (kg)"] = pivot_df.sum(axis=1)
             result = pivot_df.sort_values(by="Total Apreendido (kg)", ascending=False).reset_index()
@@ -109,7 +107,7 @@ class DrugSeizureByStateAnalyzer(Analyzer):
             return AnalysisResult(self.name, self.description, result)
 
         except KeyError:
-            logging.warning(f"Colunas necessárias não encontradas para '{self.name}'.")
+            logger.warning(f"Colunas necessárias não encontradas para '{self.name}'.")
             return AnalysisResult(self.name, self.description, pd.DataFrame())
 
 
@@ -125,22 +123,20 @@ class FirearmSeizureByStateAnalyzer(Analyzer):
         return "Soma o total de armas de fogo apreendidas por UF, um indicador da atividade policial contra o crime armado."
 
     def analyze(self, crime_data: CrimeData) -> AnalysisResult:
-        logging.info(f"Executando análise: {self.name}...")
+        logger.info(f"Executando análise: {self.name}...")
 
         try:
             event_name = "Arma de Fogo Apreendida"
             filtered_df = crime_data.data[crime_data.data["evento"] == event_name]
 
             # TODO: agrupar por tipo de arma?
-            result = (
-                filtered_df.groupby("uf")["total"].sum().sort_values(ascending=False).reset_index()
-            )
+            result = filtered_df.groupby("uf")["total"].sum().sort_values(ascending=False).reset_index()
             result = result.rename(columns={"uf": "UF", "arma": "Tipo de arma"})
 
             return AnalysisResult(self.name, self.description, result)
 
         except KeyError:
-            logging.info(f"  -> Aviso: Colunas necessárias não encontradas para '{self.name}'.")
+            logger.info(f"  -> Aviso: Colunas necessárias não encontradas para '{self.name}'.")
             return AnalysisResult(self.name, self.description, pd.DataFrame())
 
 
@@ -156,20 +152,18 @@ class VehicleCrimeByStateAnalyzer(Analyzer):
         return "Soma o total de eventos de 'Roubo de veículo' e 'Furto de veículo' por UF."
 
     def analyze(self, crime_data: CrimeData) -> AnalysisResult:
-        logging.info(f"Executando análise: {self.name}...")
+        logger.info(f"Executando análise: {self.name}...")
         try:
             vehicle_events = ["Roubo de veículo", "Furto de veículo"]
             filtered_df = crime_data.data[crime_data.data["evento"].isin(vehicle_events)]
 
             # A coluna 'total' deve conter o número de eventos
-            result = (
-                filtered_df.groupby("uf")["total"].sum().sort_values(ascending=False).reset_index()
-            )
+            result = filtered_df.groupby("uf")["total"].sum().sort_values(ascending=False).reset_index()
             result = result.rename(columns={"uf": "UF", "total": "Total de Veículos (Roubo/Furto)"})
 
             return AnalysisResult(self.name, self.description, result)
         except KeyError:
-            logging.info(f"  -> Aviso: Colunas necessárias não encontradas para '{self.name}'.")
+            logger.info(f"  -> Aviso: Colunas necessárias não encontradas para '{self.name}'.")
             return AnalysisResult(self.name, self.description, pd.DataFrame())
 
 
@@ -185,7 +179,7 @@ class GenderOfVictimsAnalyzer(Analyzer):
         return "Soma o total de vítimas masculinas e femininas para Homicídio Doloso e Tentativa de Homicídio."
 
     def analyze(self, crime_data: CrimeData) -> AnalysisResult:
-        logging.info(f"Executando análise: {self.name}...")
+        logger.info(f"Executando análise: {self.name}...")
         try:
             violent_events = ["Homicídio doloso", "Tentativa de homicídio"]
             filtered_df = crime_data.data[crime_data.data["evento"].isin(violent_events)]
@@ -204,30 +198,30 @@ class GenderOfVictimsAnalyzer(Analyzer):
             return AnalysisResult(self.name, self.description, result)
 
         except KeyError:
-            logging.warning(f"Colunas necessárias não encontradas para '{self.name}'.")
+            logger.warning(f"Colunas necessárias não encontradas para '{self.name}'.")
             return AnalysisResult(self.name, self.description, pd.DataFrame())
 
 
 class AnalysisRunner:
     """Manages and runs a series of analyzer objects."""
 
-    def __init__(self):
-        self._analyzers = []
-        self.results = []
+    def __init__(self) -> None:
+        self._analyzers: list[Analyzer] = []
+        self.results: list[AnalysisResult] = []
 
-    def register(self, analyzer: Analyzer):
+    def register(self, analyzer: Analyzer) -> None:
         """Adds an analyzer to the run list."""
         self._analyzers.append(analyzer)
-        logging.info(f"Analisador '{analyzer.name}' registrado.")
+        logger.info(f"Analisador '{analyzer.name}' registrado.")
 
-    def run(self, crime_data: CrimeData):
+    def run(self, crime_data: CrimeData) -> None:
         """Runs all registered analyzers on the given CrimeData."""
-        logging.info("--- Iniciando Análises de Política Criminal ---")
+        logger.info("--- Iniciando Análises de Política Criminal ---")
 
         if not self._analyzers:
-            logging.info("Nenhum analisador registrado.")
+            logger.info("Nenhum analisador registrado.")
             return
 
         for analyzer in self._analyzers:
             self.results.append(analyzer.analyze(crime_data))
-        logging.info("--- Análises Concluídas ---")
+        logger.info("--- Análises Concluídas ---")

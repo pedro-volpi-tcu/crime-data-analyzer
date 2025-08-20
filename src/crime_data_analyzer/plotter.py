@@ -1,4 +1,3 @@
-# coding=utf-8
 import logging
 from abc import ABC, abstractmethod
 from pathlib import Path
@@ -6,6 +5,8 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
+
+logger = logging.getLogger(__name__)
 
 
 class Plotter(ABC):
@@ -21,7 +22,7 @@ class BarPlotter(Plotter):
         Assumes the DataFrame has two columns: a category (y-axis) and a value (x-axis).
         """
         if data.empty or len(data.columns) < 2:
-            logging.warning(f"Dados insuficientes para gerar o gráfico de barras '{title}'.")
+            logger.warning(f"Dados insuficientes para gerar o gráfico de barras '{title}'.")
             return
 
         # Use a professional and pleasant style
@@ -53,8 +54,8 @@ class BarPlotter(Plotter):
 
         try:
             plt.savefig(output_path)
-            logging.info(f"Gráfico de barras salvo em: '{output_path}'")
+            logger.info(f"Gráfico de barras salvo em: '{output_path}'")
         except Exception as e:
-            logging.error(f"Erro ao salvar o gráfico: {e}")
+            logger.error(f"Erro ao salvar o gráfico: {e}")
         finally:
             plt.close()
