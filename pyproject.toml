@@ -25,7 +25,8 @@ dependencies = [
     "matplotlib",
     "seaborn",
     "requests",
-    "types-requests",
+    "dotenv",
+    "python-json-logger",
 ]
 
 [project.scripts]
@@ -58,3 +59,8 @@ ignore_missing_imports = true
 warn_unused_configs = true
 show_error_codes = true
 
+[project.optional-dependencies]
+dev = [
+    "mypy",
+    "types-requests",
+]
