@@ -26,7 +26,7 @@ dependencies = [
     "seaborn",
     "requests",
     "dotenv",
-    "python-json-logger",
+    "pydantic[email,typing-extensions]",
 ]
 
 [project.scripts]
@@ -48,19 +48,38 @@ known_first_party = ["crime_data_analyzer"]
 
 [tool.ruff]
 line-length = 120
-select = ["E", "F", "W", "I"]
+select = ["E", "F", "W", "I", "T"]
 ignore = ["E501"] # Ignored because Black/Ruff formatting handles line length
 fix = true
 
 [tool.mypy]
 python_version = "3.12"
-strict = true # Enables a large set of recommended strictness flags
-ignore_missing_imports = true
+strict = true
+# CRITICAL: These flags are needed for return type checking
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+warn_return_any = true
+warn_no_return = true
+no_implicit_optional = true
+# Additional strictness
+check_untyped_defs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
 warn_unused_configs = true
 show_error_codes = true
 
+# Para projetos com src layout
+files = ["src"]
+explicit_package_bases = true
+namespace_packages = true
+
 [project.optional-dependencies]
 dev = [
-    "mypy",
     "types-requests",
+    "types-setuptools",
+    "pandas-stubs",
+    "types-regex", 
+    "types-seaborn",
+    "types-openpyxl",
+    "pydantic[email]",  # Ensure type stubs are available in dev too
 ]

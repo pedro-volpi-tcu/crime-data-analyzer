@@ -31,9 +31,7 @@ def setup_logging() -> None:
         "version": 1,
         "disable_existing_loggers": False,  # Keep loggers from 3rd-party libs
         "formatters": {
-            "console_formatter": {
-                "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-            },
+            "console_formatter": {"format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"},
         },
         "handlers": {
             "console_handler": {
@@ -65,9 +63,7 @@ def setup_logging() -> None:
     }
 
     logging.config.dictConfig(logging_config)
-    logging.info(
-        "Logging configured successfully. Outputting to console and %s", log_file_path
-    )
+    logging.info("Logging configured successfully. Outputting to console and %s", log_file_path)
 
 
 # --- Example of how to use it ---

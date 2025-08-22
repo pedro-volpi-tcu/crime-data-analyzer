@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 
 from utils.log import setup_logging
 
+from . import config
 from .models import ExpenseResponse
 
 load_dotenv()
@@ -21,12 +22,10 @@ class TransparenciaApiClient:
     """
 
     def __init__(self) -> None:
-        self.base_url = "https://api-d.portaldatransparencia.gov.br/api-de-dados"
+        self.base_url = config.URL_PORTAL_TRANSPARENCIA
 
         self._api_key = os.getenv("KEY_VALUE")
         self._api_key_name = os.getenv("KEY_NAME")
-
-        print(f"{self._api_key_name}: {self._api_key}")
 
         if not self._api_key:
             logger.error("API Key not found. Provide it or set KEY_VALUE in your .env file.")
@@ -34,48 +33,46 @@ class TransparenciaApiClient:
 
         # Create a session to persist headers and improve performance
         self.session = requests.Session()
-        self.session.headers.update({self._api_key_name: self._api_key})
+        self.session.headers.update({self._api_key_name: self._api_key, "accept": "*/*"})
 
-    def fetch_expenses_by_agency(self, year: int, page: int = 1) -> List[ExpenseResponse]:
+    def fetch_expenses_by_agency(
+        self, year: int, superior_organ: int, organ: int, page: int = 1
+    ) -> ExpenseResponse | None:
         """
         Fetches expense data for a given year.
-
-        Args:
-            year: The year to query.
-            page: The page number for pagination.
-
-        Returns:
-            A list of dictionaries representing the expense records.
         """
-        endpoint = "/despesas/por-orgao"
+        ##########################################################################################
+        #  WARNING: NÃO PODE TER FORWARD SLASH ('/') NEM NO INÍCIO NEM NO FIM DESSE ENDPOINT!!!  #
+        ##########################################################################################
+        endpoint = r"despesas/por-orgao"
         url = urljoin(self.base_url, endpoint)
 
-        params = {"ano": year, "pagina": page}
+        params = {"ano": year, "orgaoSuperior": superior_organ, "orgao": organ, "pagina": page}
 
-        logger.info(f"Requesting expenses for {year} from {url}")
+        logger.info(f"Requesting expenses for {year} from {url} for {superior_organ}/{organ}")
+
         try:
             response = self.session.get(url, params=params)
             response.raise_for_status()
             logger.info(f"Successfully fetched {len(response.json())} expense records.")
-            return response.json()
+            return ExpenseResponse(**response.json())
+
         except requests.exceptions.RequestException as e:
             logger.error(f"API request failed for year {year}: {e}")
-            return []
+            return None
 
 
 if __name__ == "__main__":
     try:
         logger.info("--- Initializing API Client ---")
-        # 1. Create an instance of the client
+
         client = TransparenciaApiClient()
+        expenses = client.fetch_expenses_by_agency(year=2024, superior_organ=30000, organ=30000, page=1)
 
-        # 2. Call a method on the instance
-        expenses_2024 = client.fetch_expenses_by_agency(year=2024, page=1)
-
-        if expenses_2024:
-            logger.info(expenses_2024)
+        if expenses:
+            logger.info(expenses)
         else:
-            logger.warning("Fetch returned no data.")
+            logger.critical("No response returned!")
 
     except ValueError as e:
         logger.critical(e)
