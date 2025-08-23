@@ -10,7 +10,7 @@ from utils.api import handle_api_errors
 from utils.log import setup_logging
 
 from . import config
-from .models import ExpenseResponse
+from .models import BaseExpense, OrganizationalExpense, ProgrammaticExpense
 
 load_dotenv()
 setup_logging()
@@ -36,10 +36,10 @@ class TransparenciaApiClient:
         self.session = requests.Session()
         self.session.headers.update({self._api_key_name: self._api_key, "accept": "*/*"})
 
-    @handle_api_errors
+    @handle_api_errors(logger=logger)
     def fetch_expenses_by_agency(
         self, year: int, superior_organ: int, organ: int, page: int = 1
-    ) -> List[ExpenseResponse] | None:
+    ) -> List[OrganizationalExpense] | None:
         """
         Fetches expense data for a given year, for a given organ.
         """
@@ -57,13 +57,20 @@ class TransparenciaApiClient:
         response.raise_for_status()
         if n := len(response.json()):
             logger.info(f"Successfully fetched {n} expense records.")
-            expenses = [ExpenseResponse.from_api_dict(item) for item in response.json()]
+            expenses = [OrganizationalExpense.from_api_dict(item) for item in response.json()]
             return expenses
         return None
 
+    @handle_api_errors(logger=logger)
     def fetch_programatic_expenses(
-        self, year: int, function_code: str, subfunction_code: str, program_code: str, action_code: str, page: int = 1
-    ) -> List[ExpenseResponse] | None:
+        self,
+        year: int,
+        function_code: str | None,
+        subfunction_code: str | None,
+        program_code: str | None,
+        action_code: str | None,
+        page: int = 1,
+    ) -> List[ProgrammaticExpense] | None:
         """
         Fetches programatic expense data.
         """
@@ -82,9 +89,16 @@ class TransparenciaApiClient:
         response = self.session.get(url, params=params)
         if n := len(response.json()):
             logger.info(f"Successfully fetched {n} expense records.")
-            expenses = [ExpenseResponse.from_api_dict(item) for item in response.json()]
+            expenses = [ProgrammaticExpense.from_api_dict(item) for item in response.json()]
             return expenses
         return None
+
+
+def log_expenses(title: str, expenses: list[BaseExpense]) -> None:
+    logger.info(f"--- Logging {title} ---")
+    for exp in expenses:
+        if exp.empenhado:
+            logger.info(exp)
 
 
 if __name__ == "__main__":
@@ -92,13 +106,27 @@ if __name__ == "__main__":
         logger.info("--- Initializing API Client ---")
 
         client = TransparenciaApiClient()
-        for page_num in range(1, 10):
-            expenses = client.fetch_expenses_by_agency(year=2024, superior_organ=30000, organ=30000, page=page_num)
+        # expenses = client.fetch_expenses_by_agency(year=2024, superior_organ=30000, organ=30000, page=1)
 
-            if expenses:
-                logger.info(expenses)
-            else:
-                logger.warning("No response returned!")
+        drug_policy_expenses = client.fetch_programatic_expenses(
+            year=2025,
+            function_code=None,
+            subfunction_code=None,
+            program_code="5115",
+            action_code="20IE",
+            page=1,
+        )
+        log_expenses(title="Política Pública sobre Drogas", expenses=drug_policy_expenses)
+
+        public_safety_expenses = client.fetch_programatic_expenses(
+            year=2025,
+            function_code="06",
+            subfunction_code=None,
+            program_code=None,
+            action_code=None,
+            page=1,
+        )
+        log_expenses(title="Segurança Pública", expenses=public_safety_expenses)
 
     except ValueError as e:
         logger.critical(e)
