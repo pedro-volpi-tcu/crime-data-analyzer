@@ -225,3 +225,63 @@ class AnalysisRunner:
         for analyzer in self._analyzers:
             self.results.append(analyzer.analyze(crime_data))
         logger.info("--- Análises Concluídas ---")
+
+
+class SeverityAnalyzer(Analyzer):
+    """
+    Analyzes crime data to calculate a Crime Severity Index (CSI).
+    Follows the pattern required by the AnalysisRunner.
+    """
+
+    def __init__(self) -> None:
+        self.CSI_WEIGHTS = {"harm": 0.60, "disruption": 0.25, "volume": 0.15}
+        self.DIMENSION_MAPPING = {"volume": "total", "harm": "total_vitima", "disruption": "total_peso"}
+
+    @property
+    def name(self) -> str:
+        return "Crime Severity Index Analysis"
+
+    @property
+    def description(self) -> str:
+        return "Retorna o índice de severidade de cada evento criminal ou atípico."
+
+    def _standardize_column(self, column: pd.Series) -> pd.Series:
+        """Standardizes a column using Z-score."""
+        mean = column.mean()
+        std = column.std()
+        if std == 0:
+            return 0  # All values are the same
+        return (column - mean) / std
+
+    def analyze(self, crime_data: CrimeData) -> pd.DataFrame:
+        """
+        The main analysis method called by the AnalysisRunner.
+
+        Args:
+            crime_data: The main CrimeData object containing the raw data.
+
+        Returns:
+            A DataFrame with the calculated CSI scores, sorted by severity.
+        """
+        logger.info("Running Crime Severity Index analysis...")
+
+        # 1. Get the processed (cleaned and aggregated) data
+        df = crime_data.get_processed_data()
+
+        if df.empty:
+            logger.info("No data to analyze for severity.")
+            return pd.DataFrame()
+
+        # 2. Normalize the relevant columns
+        for dimension, column_name in self.DIMENSION_MAPPING.items():
+            if column_name in df.columns:
+                df[f"{dimension}_norm"] = self._standardize_column(df[column_name])
+
+        # 3. Calculate the final CSI score
+        df["csi"] = (
+            df.get("harm_norm", 0) * self.CSI_WEIGHTS["harm"]
+            + df.get("disruption_norm", 0) * self.CSI_WEIGHTS["disruption"]
+            + df.get("volume_norm", 0) * self.CSI_WEIGHTS["volume"]
+        )
+
+        return df[["crime_type", "csi"]].sort_values(by="csi", ascending=False)
