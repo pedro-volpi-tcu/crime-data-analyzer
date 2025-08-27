@@ -4,10 +4,10 @@ import logging
 from utils import log
 
 from . import config
-from .analysis import AnalysisRunner, SeverityAnalyzer
 from .builder import CrimeDataBuilder
 from .models import CrimeData
 from .reporter import ReportDispatcher
+from .scorer import AnalysisRunner, SeverityAnalyzer
 from .serializer import CrimeDataSerializer
 
 log.setup_logging()

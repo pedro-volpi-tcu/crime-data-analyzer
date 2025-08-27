@@ -1,10 +1,9 @@
-# coding=utf-8
 import logging
 from abc import ABC, abstractmethod
 
 from . import config
-from .analysis import AnalysisResult
 from .plotter import BarPlotter
+from .scorer import AnalysisResult
 
 
 class ResultReporter(ABC):

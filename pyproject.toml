@@ -26,7 +26,7 @@ dependencies = [
     "seaborn",
     "requests",
     "dotenv",
-    "pydantic[email,typing-extensions]",
+    "pydantic[email]",
 ]
 
 [project.scripts]
@@ -81,5 +81,4 @@ dev = [
     "types-regex", 
     "types-seaborn",
     "types-openpyxl",
-    "pydantic[email]",  # Ensure type stubs are available in dev too
 ]
