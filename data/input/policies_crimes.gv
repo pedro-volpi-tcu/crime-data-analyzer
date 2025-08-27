@@ -1,0 +1,171 @@
+digraph PolicyCrimeGraph {
+    // Use compound=true for subgraph clustering and LR for layout
+    compound=true;
+    rankdir=LR;
+    ranksep=2.5; // Increase horizontal distance between columns (default is ~0.5)
+    splines=ortho; // Draws edges as right-angled lines
+
+    // Global node styles
+    node [shape=box, style=filled];
+
+    // --- LEFT COLUMN: PARENT CLUSTER for all Policies ---
+    subgraph cluster_policies {
+        label="Políticas Públicas";
+        fontcolor=darkblue;
+        color=darkblue;
+        penwidth=1;
+        style=rounded;
+
+        // Default node style for policy actions
+        node [fillcolor=lightblue, fontcolor=black];
+
+        // Program 5115: Nested inside the main Policies cluster
+        subgraph cluster_5115 {
+            label="5115: Promoção do Acesso à Justiça e da Defesa dos Direitos";
+            style=filled;
+            color=darkgrey;
+            fillcolor="#f5f5f5";
+            fontcolor=darkblue;
+            penwidth=3;
+
+            "Participação do Brasil na OCDE" [type=action, code="00PN"];
+            "Promoção da Política Nacional de Justiça" [type=action, code="20I7"];
+            "Articulação de Política sobre Drogas" [type=action, code="20IE"];
+            "Gestão de Proteção de Dados" [type=action, code="21D5"];
+            "Democratização do Acesso à Justiça" [type=action, code="21F0"];
+            "Proteção do Consumidor" [type=action, code="2334"];
+            "Qualificação do Processo Normativo" [type=action, code="2733"];
+            "Defesa da Concorrência" [type=action, code="2807"];
+            "Antes que Aconteça - Políticas para Mulheres" [type=action, code="2F07"];
+            "Apoio a Projetos de Direitos Difusos" [type=action, code="6067"];
+        }
+
+        // Program 5116: Nested inside the main Policies cluster
+        subgraph cluster_5116 {
+            label="5116: Segurança Pública com Cidadania";
+            style=filled;
+            color=darkblue;
+            fillcolor="#eaf4ff";
+            fontcolor=darkblue;
+
+            "Bolsas para PRONASCI" [type=action, code="00CA"];
+            "Aprimoramento da Segurança Pública" [type=action, code="00R2"];
+            "Sistema Penitenciário Nacional" [type=action, code="00R3"];
+            "Habitação para Profissionais - Habite Seguro" [type=action, code="00U1"];
+            "Enfrentamento à Violência Contra Mulheres" [type=action, code="00UZ"];
+            "Centros Comunitários pela Vida - CONVIVE" [type=action, code="00V0"];
+            "Unidades da PRF" [type=action, code="154T"];
+            "Delegacia de Juiz de Fora/MG" [type=action, code="155H"];
+
+            // Sub-sub-cluster for PF Infrastructure
+            subgraph cluster_infra_pf {
+                label="Infraestrutura da Polícia Federal";
+                style=filled;
+                color=darkblue;
+                fillcolor=white;
+
+                "Infraestrutura da Polícia Federal" [type=action, code="15F9"];
+
+                "Superintendência Regional em Minas Gerais" [type=action, code="15WH"];
+                "Superintendência Regional no Piauí" [type=action, code="15WI"];
+                "Ampliação da Superintendência no Ceará" [type=action, code="15XA"];
+                "Instituto Nacional de Identificação" [type=action, code="15XB"];
+                "Superintendência no Maranhão" [type=action, code="15XC"];
+                "Superintendência em Sergipe" [type=action, code="15XE"];
+                "Superintendência em Pernambuco" [type=action, code="15ZE"];
+            }
+
+            "Força Nacional de Segurança Pública" [type=action, code="15P9"];
+            "Pátio Multipropósito do Rio de Janeiro" [type=action, code="164A"];
+            "Academia Nacional de Polícia Penal" [type=action, code="164C"];
+            "Unidades Operacionais - Plano Amas" [type=action, code="164D"];
+            "Universidade Corporativa da PRF" [type=action, code="166N"];
+            "Políticas de Segurança Pública" [type=action, code="21BM"];
+            "Combate à Corrupção e Lavagem de Dinheiro" [type=action, code="21BN"];
+            "Sistema Penitenciário Nacional" [type=action, code="21BP"];
+            "Implementação de Políticas de Segurança" [type=action, code="21BQ"];
+            "Apoio ao Sistema Penitenciário Nacional" [type=action, code="21EO"];
+            "Direitos em Ambiente Digital" [type=action, code="21HU"];
+            "Sistema de Passaporte e Controle de Estrangeiros" [type=action, code="2586"];
+            "Policiamento e Enfrentamento à Criminalidade" [type=action, code="2723"];
+            "Combate ao Tráfico de Drogas" [type=action, code="2726"];
+            "Força Nacional de Segurança Pública" [type=action, code="2B00"];
+        }
+    }
+
+    // --- RIGHT COLUMN: PARENT CLUSTER for all Crimes ---
+    subgraph cluster_crimes {
+        label="Indicadores de Criminalidade";
+        fontcolor=darkred;
+        color=darkred;
+        penwidth=1;
+        style=rounded;
+
+        // Crime nodes - Light coral
+        node [fillcolor=lightcoral, fontcolor=black];
+
+        "Apreensão de Cocaína" [type=crime];
+        "Apreensão de Maconha" [type=crime];
+        "Arma de Fogo Apreendida" [type=crime];
+        "Atendimento pré-hospitalar" [type=crime];
+        "Busca e salvamento" [type=crime];
+        "Combate a incêndios" [type=crime];
+        "Emissão de Alvarás de licença" [type=crime];
+        "Estupro" [type=crime];
+        "Estupro de vulnerável" [type=crime];
+        "Feminicídio" [type=crime];
+        "Furto de veículo" [type=crime];
+        "Homicídio doloso" [type=crime];
+        "Lesão corporal seguida de morte" [type=crime];
+        "Mandado de prisão cumprido" [type=crime];
+        "Morte de Agente do Estado" [type=crime];
+        "Morte no trânsito" [type=crime];
+        "Morte por intervenção de Agente do Estado" [type=crime];
+        "Mortes a esclarecer" [type=crime];
+        "Pessoa Desaparecida" [type=crime];
+        "Pessoa Localizada" [type=crime];
+        "Realização de vistorias" [type=crime];
+        "Roubo a instituição financeira" [type=crime];
+        "Roubo de carga" [type=crime];
+        "Roubo de veículo" [type=crime];
+        "Roubo seguido de morte (Latrocínio)" [type=crime];
+        "Suicídio" [type=crime];
+        "Suicídio de Agente do Estado" [type=crime];
+        "Tentativa de feminicídio" [type=crime];
+        "Tentativa de homicídio" [type=crime];
+        "Tráfico de drogas" [type=crime];
+    }
+
+    // --- EDGES ---
+    // Visible connections from policies to crimes
+    edge [style=solid, color=black];
+
+    // Program 5115 connections
+    "Articulação de Política sobre Drogas" -> "Apreensão de Cocaína";
+    "Articulação de Política sobre Drogas" -> "Apreensão de Maconha";
+    "Articulação de Política sobre Drogas" -> "Tráfico de drogas";
+    "Antes que Aconteça - Políticas para Mulheres" -> "Feminicídio";
+    "Antes que Aconteça - Políticas para Mulheres" -> "Estupro";
+    "Antes que Aconteça - Políticas para Mulheres" -> "Estupro de vulnerável";
+    "Antes que Aconteça - Políticas para Mulheres" -> "Tentativa de feminicídio";
+
+    // Program 5116 connections
+    "Aprimoramento da Segurança Pública" -> "Homicídio doloso";
+    "Aprimoramento da Segurança Pública" -> "Roubo seguido de morte (Latrocínio)";
+    "Aprimoramento da Segurança Pública" -> "Lesão corporal seguida de morte";
+    "Enfrentamento à Violência Contra Mulheres" -> "Feminicídio";
+    "Enfrentamento à Violência Contra Mulheres" -> "Estupro";
+    "Enfrentamento à Violência Contra Mulheres" -> "Tentativa de feminicídio";
+    "Combate ao Tráfico de Drogas" -> "Apreensão de Cocaína";
+    "Combate ao Tráfico de Drogas" -> "Apreensão de Maconha";
+    "Combate ao Tráfico de Drogas" -> "Tráfico de drogas";
+    "Policiamento e Enfrentamento à Criminalidade" -> "Arma de Fogo Apreendida";
+    "Policiamento e Enfrentamento à Criminalidade" -> "Roubo seguido de morte (Latrocínio)";
+    "Policiamento e Enfrentamento à Criminalidade" -> "Tentativa de homicídio";
+    "Policiamento e Enfrentamento à Criminalidade" -> "Tráfico de drogas";
+    "Policiamento e Enfrentamento à Criminalidade" -> "Roubo a instituição financeira";
+    "Policiamento e Enfrentamento à Criminalidade" -> "Homicídio doloso";
+    "Policiamento e Enfrentamento à Criminalidade" -> "Roubo de veículo";
+    "Policiamento e Enfrentamento à Criminalidade" -> "Furto de veículo";
+    "Policiamento e Enfrentamento à Criminalidade" -> "Roubo de carga";
+}

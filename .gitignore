@@ -70,8 +70,9 @@ Thumbs.db
 
 # Project specific
 data/input/*
-!data/input/.gitkeep
+!data/input/policies_crimes.gv
 data/output/*
 !data/output/.gitkeep
 logs/*
 !logs/.gitkeep
+.mypy_cache
