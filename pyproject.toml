@@ -27,6 +27,7 @@ dependencies = [
     "requests",
     "dotenv",
     "pydantic[email]",
+    "networkx",
 ]
 
 [project.scripts]
@@ -81,4 +82,5 @@ dev = [
     "types-regex", 
     "types-seaborn",
     "types-openpyxl",
+    "types-networkx",
 ]
