@@ -39,7 +39,7 @@ Para instruções mais detalhadas e opções disponíveis, consulte a documenta�
 
 A presente metodologia destina-se ao cálculo de um Índice de Estresse para políticas de segurança pública. O modelo parte da premissa de que cada política $P_i$, com $i \in \mathbb{N}$, dispõe de um orçamento específico $B_i$ e se aplica a um conjunto determinado de crimes, aqui denotados por $c_{ij}$, onde $j \in \mathbb{N}$.
 
-A análise fundamenta-se nos dados da plataforma SINESP VDE, a partir dos quais os crimes são caracterizados por três dimensões primárias: o número de vítimas ($\alpha$), um fator de peso ou relevância da ocorrência ($\beta$) e a quantidade de apreensões ($\gamma$). Desta forma, cada crime $c_{ij}$ é formalmente representado por um vetor tridimensional:
+A análise fundamenta-se nos dados da plataforma [Sinesp VDE](https://www.gov.br/mj/pt-br/assuntos/sua-seguranca/seguranca-publica/estatistica/dados-nacionais-1/base-de-dados-e-notas-metodologicas-dos-gestores-estaduais-sinesp-vde-2022-e-2023), a partir dos quais os crimes são caracterizados por três dimensões primárias: o número de vítimas ($\alpha$), um fator de peso ou relevância da ocorrência ($\beta$) e a quantidade de apreensões ($\gamma$). Desta forma, cada crime $c_{ij}$ é formalmente representado por um vetor tridimensional:
 
 $$c_{ij} = (\alpha_{ij}, \beta_{ij}, \gamma_{ij})$$
 
