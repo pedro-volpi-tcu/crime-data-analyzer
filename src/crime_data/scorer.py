@@ -227,9 +227,8 @@ class AnalysisRunner:
         logger.info("--- Análises Concluídas ---")
 
 
-class SeverityAnalyzer(Analyzer):
-    """
-    Analyzes crime data to calculate a Crime Severity Index (CSI).
+class SeverityAnalyzer:
+    """Analyzes crime data to calculate a Crime Severity Index (CSI).
     Follows the pattern required by the AnalysisRunner.
     """
 
@@ -250,7 +249,7 @@ class SeverityAnalyzer(Analyzer):
         mean = column.mean()
         std = column.std()
         if std == 0:
-            return 0  # All values are the same
+            return column * 0  # All values are the same
         return (column - mean) / std
 
     def analyze(self, crime_data: CrimeData) -> pd.DataFrame:
