@@ -57,10 +57,12 @@ $$G(c_{ij}) = \omega_1 \alpha_{ij} + \omega_2 \beta_{ij} + \omega_3 \gamma_{ij}$
 
 E o índice de estresse da política é dado por:
 
-$$E(P_i) = \frac{\sum_{j \in P} G(c_{ij})}{B_i}$$
+$$\mathrm{IE}(P_i) = \frac{\sum_{j \in P} G(c_{ij})}{B_i}$$
 
 
 Que representa a razão entre a gravidade de todos os crimes cobertos pela política dividida pelo orçamento total da política.
+
+Políticas com maior grau de estresse cobrem crimes mais sérios com menos orçamento e devem receber atenção mais focada.
 
 ## Licença
 
