@@ -42,16 +42,16 @@ Cada política $P_i$, $i \in \mathbb{N}$ possui um determinado orçamento $B_i$,
 
 Os crimes analisados com base nos dados da [plataforma VDE](https://www.gov.br/mj/pt-br/assuntos/sua-seguranca/seguranca-publica/estatistica/dados-nacionais-1/base-de-dados-e-notas-metodologicas-dos-gestores-estaduais-sinesp-vde-2022-e-2023) possuem essencialmente três categorias relevantes: número de vítimas, peso e quantidade de apreensões.
 
-Assim, o crime $c_{ij}$ é o vetor $(\Alpha_{ij}, \Beta_{ij}, \Gamma_{ij})$.
+Assim, o crime $c_{ij}$ é o vetor $(\alpha_{ij}, \beta_{ij}, \gamma_{ij})$.
 
 Cada categoria $X$ é então normalizada segundo a fórmula:
 $$Z = \frac{X - \mu}{\sigma}$$
 
 Cada crime possui um escore de seriedade, que é uma média ponderada das três categorias, com base nos seguintes pesos:
-$$\Omega = \{\alpha, \beta, \gamma\}$$
+$$\Omega = \{\omega_1, \omega_2, \omega_3\}$$
 
 Assim, o escore de seriade de um crime $c_{ij}$ é a média ponderada abaixo:
-$$S(c_{ij}) = \alpha \Alpha_{ij} + \beta \Beta_{ij} + \gamma \Gamma_{ij}$$
+$$S(c_{ij}) = \omega_1 \alpha_{ij} + \omega_2 \Beta_{ij} + \omega_3 \gamma_{ij}$$
 
 
 ## Licença
