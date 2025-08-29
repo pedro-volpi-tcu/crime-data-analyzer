@@ -40,7 +40,7 @@ O presente módulo tem por objetivo calcular índice de estresse de políticas d
 
 Cada política $P_i$, $i \in \mathbb{N}$ possui um determinado orçamento $B_i$, e cobre um conjunto de crimes $c_{ij}$, $j \in \mathbb{N}$.
 
-Os crimes analisados com base nos dados da [plataforma VDE](https://www.gov.br/mj/pt-br/assuntos/sua-seguranca/seguranca-publica/estatistica/dados-nacionais-1/base-de-dados-e-notas-metodologicas-dos-gestores-estaduais-sinesp-vde-2022-e-2023) possuem essencialmente três categorias relevantes: número de vítimas, peso e quantidade de apreensões.
+Os crimes analisados com base nos dados da [plataforma VDE](https://www.gov.br/mj/pt-br/assuntos/sua-seguranca/seguranca-publica/estatistica/dados-nacionais-1/base-de-dados-e-notas-metodologicas-dos-gestores-estaduais-sinesp-vde-2022-e-2023) possuem essencialmente três categorias relevantes: número de vítimas ($\alpha$), peso ($\beta$) e quantidade de apreensões ($\gamma$).
 
 Assim, o crime $c_{ij}$ é o vetor $(\alpha_{ij}, \beta_{ij}, \gamma_{ij})$.
 
