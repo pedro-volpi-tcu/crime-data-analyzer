@@ -43,13 +43,13 @@ A análise fundamenta-se nos dados da plataforma [Sinesp VDE](https://www.gov.br
 
 $$c_{ij} = (\alpha_{ij}, \beta_{ij}, \gamma_{ij})$$
 
-Para garantir a comparabilidade entre as distintas dimensões, cada uma dessas variáveis ($X \in \{\alpha, \beta, \gamma\}$) é submetida a um processo de normalização. Utiliza-se a normalização por escore Z (*Z-score*), conforme a equação:
+Para garantir a comparabilidade entre as distintas dimensões, cada uma dessas variáveis ($X \in {\alpha, \beta, \gamma}$) é submetida a um processo de normalização. Utiliza-se a normalização por escore Z, conforme a equação:
 
 $$Z = \frac{X - \mu}{\sigma}$$
 
 onde $\mu$ representa a média e $\sigma$ o desvio padrão da respectiva variável no conjunto de dados.
 
-Após a normalização, calcula-se um escore de gravidade ($G$) para cada crime. Este escore é definido como a média ponderada das três dimensões normalizadas, com base em um conjunto de pesos $\Omega = \{\omega_1, \omega_2, \omega_3\}$ que reflete a importância relativa de cada dimensão. O escore de gravidade para um crime $c_{ij}$ é, portanto, dado por:
+Após a normalização, calcula-se um escore de gravidade ($G$) para cada crime. Este escore é definido como a média ponderada das três dimensões normalizadas, com base em um conjunto de pesos $\Omega = {\omega_1, \omega_2, \omega_3}$ que reflete a importância relativa de cada dimensão. O escore de gravidade para um crime $c_{ij}$ é, portanto, dado por:
 
 $$G(c_{ij}) = \omega_1 \alpha_{ij} + \omega_2 \beta_{ij} + \omega_3 \gamma_{ij}$$
 
