@@ -35,7 +35,7 @@ python -m crime_data_analizer.main --args
 
 Para instruções mais detalhadas e opções disponíveis, consulte a documentação da ferramenta.
 
-### **Metodologia**
+# Metodologia
 
 A presente metodologia destina-se ao cálculo de um Índice de Estresse para políticas de segurança pública. O modelo parte da premissa de que cada política $P_i$, com $i \in \mathbb{N}$, dispõe de um orçamento específico $B_i$ e se aplica a um conjunto determinado de crimes, aqui denotados por $c_{ij}$, onde $j \in \mathbb{N}$.
 
@@ -49,7 +49,7 @@ $$Z = \frac{X - \mu}{\sigma}$$
 
 onde $\mu$ representa a média e $\sigma$ o desvio padrão da respectiva variável no conjunto de dados.
 
-Após a normalização, calcula-se um escore de gravidade ($G$) para cada crime. Este escore é definido como a média ponderada das três dimensões normalizadas, com base em um conjunto de pesos $\Omega = {\omega_1, \omega_2, \omega_3}$ que reflete a importância relativa de cada dimensão. O escore de gravidade para um crime $c_{ij}$ é, portanto, dado por:
+Após a normalização, calcula-se um escore de gravidade ($G$) para cada crime. Este escore é definido como a média ponderada das três dimensões normalizadas, com base em um conjunto de pesos $\Omega = \\{\omega_1, \omega_2, \omega_3\\}$ que reflete a importância relativa de cada dimensão. O escore de gravidade para um crime $c_{ij}$ é, portanto, dado por:
 
 $$G(c_{ij}) = \omega_1 \alpha_{ij} + \omega_2 \beta_{ij} + \omega_3 \gamma_{ij}$$
 
