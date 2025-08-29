@@ -83,4 +83,5 @@ dev = [
     "types-seaborn",
     "types-openpyxl",
     "types-networkx",
+    "pandas-stubs",
 ]
