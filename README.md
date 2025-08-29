@@ -44,20 +44,20 @@ Os crimes analisados com base nos dados da [plataforma VDE](https://www.gov.br/m
 
 Assim, o crime $c_{ij}$ é o vetor $(\alpha_{ij}, \beta_{ij}, \gamma_{ij})$.
 
-Cada categoria $X$ é então normalizada segundo a fórmula:
+Cada categoria $X = \alpha, \beta, \gamma$ é então normalizada segundo a fórmula:
 
 $$Z = \frac{X - \mu}{\sigma}$$
 
-Cada crime possui um escore de seriedade, que é uma média ponderada das três categorias, com base nos seguintes pesos:
+Cada crime possui um escore de seriedade $G$, que é uma média ponderada das três categorias, com base nos seguintes pesos:
 $$\Omega = \{\omega_1, \omega_2, \omega_3\}$$
 
-Assim, o escore de gravidade de um crime $c_{ij}$ é a média ponderada abaixo:
+Assim, o escore de gravidade de um crime $c_{ij}$ é:
 
 $$G(c_{ij}) = \omega_1 \alpha_{ij} + \omega_2 \beta_{ij} + \omega_3 \gamma_{ij}$$
 
 E o índice de estresse da política é dado por:
 
-$$E(P_i) = \frac{\sum_{j \in P} G(c_{ij}}{B_i}$$
+$$E(P_i) = \frac{\sum_{j \in P} G(c_{ij})}{B_i}$$
 
 
 Que representa a razão entre a gravidade de todos os crimes cobertos pela política dividida pelo orçamento total da política.
