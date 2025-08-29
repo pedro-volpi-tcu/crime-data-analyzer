@@ -51,7 +51,7 @@ $$Z = \frac{X - \mu}{\sigma}$$
 Cada crime possui um escore de seriedade $G$, que é uma média ponderada das três categorias, com base nos seguintes pesos:
 $$\Omega = \{\omega_1, \omega_2, \omega_3\}$$
 
-Assim, o escore de gravidade de um crime $c_{ij}$ é:
+Assim, o escore de gravidade de um crime $c_{ij}$, após a normalização, é:
 
 $$G(c_{ij}) = \omega_1 \alpha_{ij} + \omega_2 \beta_{ij} + \omega_3 \gamma_{ij}$$
 
