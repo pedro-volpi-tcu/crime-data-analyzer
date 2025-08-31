@@ -1,0 +1,71 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{amsmath, amssymb}
+
+% ----- Author and Document Information -----
+\author{Pedro Volpi Nacif}
+\title{Metodologia do Projeto}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Introdução}
+\label{sec:introducao}
+Este projeto consiste em uma ferramenta de análise de dados de criminalidade, criada para auxiliar na seleção e priorização de auditorias na área de segurança pública. A ferramenta foi desenvolvida para ajudar os analistas a identificar tendências, padrões e áreas que precisam de uma investigação mais aprofundada, transformando dados brutos em percepções úteis.
+
+A ferramenta opera em três etapas principais: processamento, análise e visualização. Primeiro, ela processa dados de diversas fontes, aplicando métodos analíticos para extrair informações relevantes. Em seguida, gera gráficos e visualizações que tornam dados complexos mais fáceis de entender. Para facilitar a colaboração e o uso externo, a ferramenta também oferece a funcionalidade de exportar os resultados da análise para formatos comuns, como planilhas Excel.
+
+O projeto está disponível para uso com Python 3.12 ou superior e pode ser facilmente instalado através de um comando `pip`. Uma vez instalado, o software pode ser executado diretamente pela linha de comando, oferecendo uma interface prática para a análise de dados de criminalidade.
+
+\section{Metodologia}
+\label{sec:metodologia}
+Cada crime possui três dimensões: número de vítimas (\( X_1 \)), peso total das apreensões (\( X_2 \)) e número de apreensões (\( X_3 \)).
+
+Assim, um crime \( C \) é definido pelo vetor tridimensional
+\[
+    C = \left( X_{1}, X_{2}, X_{3} \right)
+\]
+
+Para que se possa comparar as três dimensões, fazemos uma normalização Z-escore:
+\[
+    Z = \frac{ X - \mu }{ \sigma }
+\]
+
+Nosso crime normalizado se torna:
+\[
+    c = \left( Z_1, Z_2, Z_3 \right)
+\]
+
+Utilizamos uma norma ponderada \( || \cdot ||_\omega \) para permitir comparação entre diferentes crimes:
+\[
+    || c ||_\omega = \sqrt{(\omega_1 Z_1)^2 + (\omega_2 Z_2)^2 + (\omega_3 Z_3)^{2}}
+\]
+
+Na base de dados atual não há crime em que mais de uma dimensão seja não nula, portanto, para um dado crime, a métrica colapsa em:
+\[
+    || c ||_\omega = \max (|\omega_1 Z_1| , | \omega_2 Z_2|, |\omega_3 Z_3|)
+\]
+
+No entanto, ao comparar um conjunto de crimes, faz-se necessário introduzir a noção de união entre eles. Comparar os crimes 1 e 2 com o 3 induz à noção de soma entre os vetores \( X_1 \) e \( X_2 \) para compará-los com \( X_3 \).
+
+\[ X_1 + X_2 \gtrless X_3 \]
+
+\subsection{Desigualdade triangular e adição de métricas}%
+Exemplo:
+\begin{align*}
+    c_1 &= (1, 0, 0) \\
+    c_2 &= (0, 1, 0)
+\end{align*}
+
+Soma de normas versus norma da soma:
+\begin{align*}
+    || (1, 1, 0) || &< || (1, 0, 0) || + || (1, 0, 0) || \\
+    \sqrt{2} \quad &< \quad 2
+\end{align*}
+
+Implica que \textbf{a diversificação de crimes é menos severa que dois crimes da mesma espécie}. Idealmente, nosso modelo deve sugerir o contrário, portanto opta-se pela soma de normas.
+
+\end{document}
