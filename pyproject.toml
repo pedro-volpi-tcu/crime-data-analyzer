@@ -76,6 +76,8 @@ namespace_packages = true
 
 [project.optional-dependencies]
 dev = [
+    "pytest",
+    "tqdm",
     "types-requests",
     "types-setuptools",
     "pandas-stubs",
