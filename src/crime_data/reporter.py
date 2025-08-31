@@ -1,7 +1,8 @@
 import logging
 from abc import ABC, abstractmethod
 
-from . import config
+from utils import config
+
 from .plotter import BarPlotter
 from .scorer import AnalysisResult
 

@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 
 import pandas as pd
 
-from . import config
+from utils import config
 
 
 class CrimeData:

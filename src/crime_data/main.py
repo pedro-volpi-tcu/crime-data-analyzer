@@ -1,10 +1,9 @@
 import argparse
 import logging
 
-from utils import log
+from utils import config, log
 
-from . import config
-from .builder import CrimeDataBuilder
+from .loader import CrimeDataLoader
 from .models import CrimeData
 from .reporter import ReportDispatcher
 from .scorer import AnalysisRunner, SeverityAnalyzer
@@ -40,8 +39,8 @@ def load_or_build_data() -> CrimeData:
 
     if not config.SERIALIZE_FILEPATH.exists():
         logger.info("Arquivo processado não encontrado. Construindo dados a partir da fonte...")
-        builder = CrimeDataBuilder(config.INPUT_DIR)
-        crime_data = builder.build()
+        loader = CrimeDataLoader(config.INPUT_DIR)
+        crime_data = loader.load()
 
         logger.info(f"Salvando dados processados para uso futuro em '{config.SERIALIZE_FILEPATH}'...")
         CrimeDataSerializer.serialize(crime_data, config.SERIALIZE_FILEPATH)
